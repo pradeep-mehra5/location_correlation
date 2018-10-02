@@ -75,7 +75,7 @@ def main():
                     if not os.path.exists(os.path.dirname(spfile)):
                         os.makedirs(os.path.dirname(spfile))
 
-                    # for writing in a plt file
+                    # for writing in a plt  file
                     # with open(spfile,'w+') as spfile_handle:
                     #     spfile_handle.write('Extracted stay points:\longitude\t\tlatitude\t\tarriving time\t\tleaving time\n')
                     #
