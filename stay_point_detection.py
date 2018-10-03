@@ -1,4 +1,5 @@
 import time
+import datetime
 import os
 from ctypes import *
 from xlwt import Workbook
@@ -50,6 +51,7 @@ def stayPointExtraction(fileName, t_distance=200, t_time = 1200):
 
 
 def cluster_stay_points(all_spts):
+    print('Clustering preprocessing has been started')
     all_lats = []
     all_longs = []
     all_cords = []
@@ -63,6 +65,7 @@ def cluster_stay_points(all_spts):
 def main():
     all_spts = set({})
     count = 0
+    print(f'Time: {datetime.datetime.now()} \nWriting in files..please wait for some time.The data is hugeeee..!!!')
     for dirname, dirnames, filenames in os.walk('Data'):
         filenum = len(filenames)
         for filename in filenames:
@@ -75,7 +78,7 @@ def main():
                     if not os.path.exists(os.path.dirname(spfile)):
                         os.makedirs(os.path.dirname(spfile))
 
-                    # for writing in a plt  file
+                    # for writing in a plt file
                     # with open(spfile,'w+') as spfile_handle:
                     #     spfile_handle.write('Extracted stay points:\longitude\t\tlatitude\t\tarriving time\t\tleaving time\n')
                     #
@@ -101,7 +104,7 @@ def main():
                         row+=1
                     wb.save(os.path.join(
                         os.path.dirname(spfile) + '/' + (os.path.splitext(os.path.basename(spfile))[0]) + '.xls'))
-    print(all_spts)
+    print(f'\n\nTime: {datetime.datetime.now()}\nAll staypoints are:\n{all_spts}')
     cluster_stay_points(all_spts)
 
 if __name__ == '__main__':
