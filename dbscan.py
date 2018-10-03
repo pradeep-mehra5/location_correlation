@@ -4,6 +4,11 @@ from auxiliary_fns import getDistance
 UNCLASSIFIED = False
 NOISE = None
 
+CLUSTER_LIST = []
+CLUSTER_DICT = {}
+
+# def getSet(m,classifications,cluster_id):
+
 
 def _eps_neighborhood(p, q, eps):
     return getDistance(p[1],p[0],q[1],q[0])<eps;
@@ -54,11 +59,14 @@ def dbscan(m, eps, min_points):
         point = [m[0][point_id],m[1][point_id]]  #when used a module
         if classifications[point_id] == UNCLASSIFIED:
             if _expand_cluster(m, classifications, point_id, cluster_id, eps, min_points):
+                # CLUSTER_DICT[cluster_id] = getSet(m,classifications,cluster_id)
                 cluster_id = cluster_id + 1
-    return classifications
+    CLUSTER_LIST = classifications
+    print(CLUSTER_LIST)
 
 def main():
-    m = np.matrix('39.978848289855065 39.981109225 39.98103225000002 39.97863413513517 39.98140922093023 40.0023006763285 ; 116.32662847826084 116.30907245 116.31030393478255 116.32625096396397 116.31101056976746 116.17073342028988 ')
+    # m = np.matrix('39.978848289855065 39.981109225 39.98103225000002 39.97863413513517 39.98140922093023 40.0023006763285 ; 116.32662847826084 116.30907245 116.31030393478255 116.32625096396397 116.31101056976746 116.17073342028988 ')
+    m = [[39.978848289855065 ,39.981109225 ,39.98103225000002, 39.97863413513517 ,39.98140922093023, 40.0023006763285 ],[116.32662847826084, 116.30907245 ,116.31030393478255, 116.32625096396397 ,116.31101056976746 ,116.17073342028988 ]]
     eps = 200
     min_points = 2
     print(dbscan(m, eps, min_points))

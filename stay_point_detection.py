@@ -58,7 +58,7 @@ def cluster_stay_points(all_spts):
         all_longs.append(point[1])
     all_cords.append(all_lats)
     all_cords.append(all_longs)
-    print(dbscan(all_cords,200,10))
+    dbscan(all_cords,200,10)
 
 def main():
     all_spts = set({})
