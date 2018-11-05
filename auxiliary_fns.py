@@ -25,3 +25,12 @@ def getMeanCoordinates(gpsPoints):
         lat += float(fields[1])
     return (lon/num_of_points , lat/num_of_points)
 
+
+#function to get location , i.e. mean point of a cluster of stay points
+def getLocationFromSPs(cluster):
+    lon,lat = 0.0,0.0
+    num_of_points = len(cluster)
+    for point in cluster:
+        lon += point[0]
+        lat += point[1]
+    return (lon/num_of_points , lat/num_of_points)

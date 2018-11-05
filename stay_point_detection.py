@@ -50,6 +50,10 @@ def stayPointExtraction(fileName, t_distance=200, t_time = 1200):
     return stayPoints
 
 
+#   preprocessing the staypoints
+#   from : (lat1,long1),(lat2,long2) ... (latn,longn)
+#   to : (lat1,lat2,...latn),(long1,long2,...longn)
+#   and passing it to dbscan function
 def cluster_stay_points(all_spts):
     print('Clustering preprocessing has been started')
     all_lats = []
@@ -61,6 +65,7 @@ def cluster_stay_points(all_spts):
     all_cords.append(all_lats)
     all_cords.append(all_longs)
     dbscan(all_cords,200,10)
+
 
 def main():
     all_spts = set({})

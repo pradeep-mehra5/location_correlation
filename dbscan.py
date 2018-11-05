@@ -1,4 +1,5 @@
 from auxiliary_fns import getDistance
+from reverse_geocoding import createLocationDictionary
 import datetime
 
 UNCLASSIFIED = False
@@ -6,6 +7,7 @@ NOISE = None
 
 CLUSTER_LIST = []
 CLUSTER_DICT = {}
+
 
 def _eps_neighborhood(p, q, eps):
     return getDistance(p[1],p[0],q[1],q[0])<eps;
@@ -45,6 +47,7 @@ def _expand_cluster(m, classifications, point_id, cluster_id, eps, min_points):
         return True
 
 
+#   bnscan algorithm
 def dbscan(m, eps, min_points):
     print(f'\n\nTime: {datetime.datetime.now()}\nClustering has started')
     cluster_id = 1
@@ -58,6 +61,10 @@ def dbscan(m, eps, min_points):
     CLUSTER_LIST = classifications
     print(f'\n\nTime: {datetime.datetime.now()}\nList of clusters is: \n{CLUSTER_LIST}')
     print(f'\n\nTime: {datetime.datetime.now()}\nCluster dictionary is:\n{CLUSTER_DICT}')
+
+    createLocationDictionary(CLUSTER_DICT)
+
+
 
 def main():
     m = [[39.90073069733655,39.899079855491344,39.9008860769231,39.978848289855065 ,39.981109225 ,39.98103225000002, 39.97863413513517 ,39.98140922093023, 40.0023006763285 ],[116.38687045278456,116.37943961849712,116.38650571428569,116.32662847826084, 116.30907245 ,116.31030393478255, 116.32625096396397 ,116.31101056976746 ,116.17073342028988 ]]
