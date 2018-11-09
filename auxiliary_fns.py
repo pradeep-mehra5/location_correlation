@@ -1,4 +1,5 @@
 from math import radians, cos, sin, asin , sqrt
+import datetime
 
 
 #function to calculate distance between two points represented
@@ -34,3 +35,11 @@ def getLocationFromSPs(cluster):
         lon += point[0]
         lat += point[1]
     return (lon/num_of_points , lat/num_of_points)
+
+#function to get the timestamp from datetime
+def getTimeStamp(dtime):
+    date,time = dtime.split(',')
+    yyyy,mm,dd = list(map(int,date.split('-')))
+    hours,min,secs = list((map(int,time.split(':'))))
+    t = datetime.datetime()
+    return t.timestamp(yyyy,mm,dd,hours,min,secs)

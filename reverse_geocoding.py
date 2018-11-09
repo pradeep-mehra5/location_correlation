@@ -1,7 +1,13 @@
 import requests
 from auxiliary_fns import getLocationFromSPs
 from xlwt import Workbook
+import xlrd
+import openpyxl
 import datetime
+import os
+import global_vars
+# from stay_point_detection import get_all_spts
+# from dbscan import get_cluster_list
 
 #for mapping clusterID with Location
 LOCATION_DICT = {}
@@ -27,34 +33,61 @@ def getAddress(latitude,longitude):
 
 
 #   for creating a dictionary of locations mapping locations with their clusterID
-def createLocationDictionary(CLUSTER_DICT):
+def createLocationDictionary():
     print(f'\n\nTime: {datetime.datetime.now()}')
     print("Creating location dictionary")
-    for clusterID in CLUSTER_DICT:
-        CLUSTER_MEAN[clusterID] = getLocationFromSPs(CLUSTER_DICT[clusterID])
+    for clusterID in global_vars.CLUSTER_DICT:
+        CLUSTER_MEAN[clusterID] = getLocationFromSPs(global_vars.CLUSTER_DICT[clusterID])
     print(CLUSTER_MEAN)
 
     for clusterID in CLUSTER_MEAN:
         LOCATION_DICT[clusterID] = getAddress(CLUSTER_MEAN[clusterID][0],CLUSTER_MEAN[clusterID][1])
     print(LOCATION_DICT)
-    storeInFile(LOCATION_DICT,CLUSTER_MEAN)
+    storeInFile()
 
 
 #   writing the data in file
-def storeInFile(LOCATION_DICT,CLUSTER_MEAN):
+def storeInFile():
     print(f'\n\nTime: {datetime.datetime.now()}\nWriting Locations into Files')
-    wb = Workbook()
-    locationSheet = wb.add_sheet('Locations')
-    locationSheet.write(0,0,'LocationID(ClusterID)')
-    locationSheet.write(0,1,'Latitude')
-    locationSheet.write(0,2,'Longitude')
-    locationSheet.write(0,3,'Location Address')
+    wb = openpyxl.Workbook()
+    locationSheet = wb.active
+    locationSheet.title = 'Locations'
+    locationSheet.cell(row = 1,column=1).value="LocationID(ClusterID)"
+    locationSheet.cell(row = 1,column=2).value="Latitude"
+    locationSheet.cell(row = 1,column=3).value="Longitude"
+    locationSheet.cell(row = 1,column=4).value="Location Address"
 
-    row = 1
+    rw = 1
     for clusterId in CLUSTER_MEAN:
-        locationSheet.write(row,0,str(clusterId))
-        locationSheet.write(row,1,str(CLUSTER_MEAN[clusterId][0]))
-        locationSheet.write(row,2,str(CLUSTER_MEAN[clusterId][1]))
-        locationSheet.write(row,3,str(LOCATION_DICT[clusterId]))
-        row+=1
-    wb.save('locations.xls')
+        locationSheet.cell(row = rw,column=1).value=str(clusterId)
+        locationSheet.cell(row = rw,column=2).value=str(CLUSTER_MEAN[clusterId][0])
+        locationSheet.cell(row = rw,column=3).value=str(CLUSTER_MEAN[clusterId][1])
+        locationSheet.cell(row = rw,column=4).value=str(LOCATION_DICT[clusterId])
+        rw+=1
+    wb.save('locations.xlsx')
+    global_vars.CLUSTER_MEAN = CLUSTER_MEAN
+    global_vars.LOCATION_DICT = LOCATION_DICT
+    attachLocations()
+
+
+def attachLocations():
+    all_spts = list(global_vars.all_spts)
+    for dirname,dirnames,filenames in os.walk('Location_History'):
+        for fname in filenames:
+            if fname.endswith('xlsx'):
+                locationIDs = []
+                historyFile = os.path.join(dirname, fname)
+                wb = xlrd.open_workbook(historyFile)
+                sheet = wb.sheet_by_index(0)
+                row_count = sheet.nrows
+                for row_num in range(1,row_count):
+                    lat = float(sheet.cell_value(row_num,0))
+                    long = float(sheet.cell_value(row_num,1))
+                    latlong = (lat,long)
+                    ind = all_spts.index(latlong)
+                    locationIDs.append(global_vars.CLUSTER_LIST[ind])
+                wb = openpyxl.load_workbook(filename=historyFile)
+                ws = wb.worksheets[0]
+                for index in range(len(locationIDs)):
+                    ws.cell(row=2+index,column=5).value = str(locationIDs[index])
+                wb.save(historyFile)
