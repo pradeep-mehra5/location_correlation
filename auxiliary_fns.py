@@ -41,5 +41,5 @@ def getTimeStamp(dtime):
     date,time = dtime.split(',')
     yyyy,mm,dd = list(map(int,date.split('-')))
     hours,min,secs = list((map(int,time.split(':'))))
-    t = datetime.datetime()
-    return t.timestamp(yyyy,mm,dd,hours,min,secs)
+    t = datetime.datetime(yyyy,mm,dd,hours,min,secs)
+    return t.timestamp()

@@ -22,7 +22,11 @@ def location_correlation():
                 arrival_time = sheet.cell_value(row_num,2)
                 leave_time = sheet.cell_value(row_num,3)
                 key = (arrival_time,leave_time)
-                val = int(sheet.cell_value(row_num,4))
+                val = sheet.cell_value(row_num,4)
+                if val=='None':
+                    val = 0
+                else:
+                    val = int(val)
                 history[key] = val
             trips = TripPartition(history,tripPartitionTime)
             for trip in trips:
@@ -32,18 +36,42 @@ def location_correlation():
                         correlation[trip[index1]-1][trip[index2]-1] += alpha
     print(correlation)
     return correlation
-location_correlation()
+
+# location_correlation()
 
 
 def TripPartition(history,tripPartitionTime):
     trips = []
-#     timeStampedHistory = {}
-#     for h in history:
-#         ts1 = getTimeStamp(h[0])
-#         ts2 = getTimeStamp(h[1])
-#         timeStampedHistory[(ts1,ts2)] = history[h]
-#     prevtime =
-#     for tsh in timeStampedHistory:
+    timeStampedHistory = {}
+    for h in history:
+        ts1 = getTimeStamp(h[0])
+        ts2 = getTimeStamp(h[1])
+        timeStampedHistory[(ts1,ts2)] = history[h]
+    # prevtime/ =
+    # for tsh in timeStampedHistory:
 #         if tsh[]
 #         prevtime = tsh[1]
     return trips
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

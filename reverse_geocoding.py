@@ -6,6 +6,7 @@ import openpyxl
 import datetime
 import os
 import global_vars
+from mining_location_correlation import location_correlation
 # from stay_point_detection import get_all_spts
 # from dbscan import get_cluster_list
 
@@ -91,3 +92,5 @@ def attachLocations():
                 for index in range(len(locationIDs)):
                     ws.cell(row=2+index,column=5).value = str(locationIDs[index])
                 wb.save(historyFile)
+
+                location_correlation()
