@@ -93,4 +93,4 @@ def attachLocations():
                     ws.cell(row=2+index,column=5).value = str(locationIDs[index])
                 wb.save(historyFile)
 
-                location_correlation()
+    location_correlation()

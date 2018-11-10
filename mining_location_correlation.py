@@ -8,8 +8,8 @@ def location_correlation():
     tripPartitionTime = 60*60*5
     b = 1
     locationsNum = len(global_vars.LOCATION_DICT)
-    empty = [0]*locationsNum
-    for count in range(0,locationsNum):
+    empty = [0]*(locationsNum+1)
+    for count in range(0,locationsNum+1):
         correlation.append(empty)
 
     for dirname,dirnames,filenames in os.walk('Location_History'):
@@ -40,34 +40,56 @@ def location_correlation():
 # location_correlation()
 
 
-def TripPartition(history,tripPartitionTime):
+def TripPartition(history,tripPartitionTime = 1*60*60):
     trips = []
     timeStampedHistory = {}
     for h in history:
         ts1 = getTimeStamp(h[0])
         ts2 = getTimeStamp(h[1])
         timeStampedHistory[(ts1,ts2)] = history[h]
-    # prevtime/ =
-    # for tsh in timeStampedHistory:
-#         if tsh[]
-#         prevtime = tsh[1]
+    arrivals = []
+    leave = []
+    ids = []
+    for tsh in timeStampedHistory:
+        arrivals.append(tsh[0])
+        leave.append(tsh[1])
+        ids.append(timeStampedHistory[tsh])
+
+
+    for fillslot in range(len(arrivals) - 1, 0, -1):
+        positionOfMax = 0
+        for location in range(1, fillslot + 1):
+            if arrivals[location] > arrivals[positionOfMax]:
+                positionOfMax = location
+
+        temp = arrivals[fillslot]
+        arrivals[fillslot] = arrivals[positionOfMax]
+        arrivals[positionOfMax] = temp
+
+        temp = leave[fillslot]
+        leave[fillslot] = leave[positionOfMax]
+        leave[positionOfMax] = temp
+
+        temp = ids[fillslot]
+        ids[fillslot] = ids[positionOfMax]
+        ids[positionOfMax] = temp
+
+    a_trip = []
+    a_trip.append(ids[0])
+    for index in range(0,len(arrivals)-1):
+        if arrivals[index+1]-leave[index] < tripPartitionTime:
+            a_trip.append(ids[index+1])
+        else:
+            trips.append(a_trip)
+            a_trip = []
+            a_trip.append(ids[index+1])
+    trips.append(a_trip)
     return trips
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+if __name__ == '__main__':
+    location_correlation()
 
 
 

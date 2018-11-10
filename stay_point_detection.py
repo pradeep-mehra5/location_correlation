@@ -2,7 +2,6 @@ import time
 import datetime
 import os
 from ctypes import *
-from xlwt import Workbook
 from auxiliary_fns import getDistance , getMeanCoordinates
 from dbscan import dbscan
 import global_vars
