@@ -63,7 +63,6 @@ def TripPartition(history,tripPartitionTime = 3*60*60):
         leave.append(tsh[1])
         ids.append(timeStampedHistory[tsh])
 
-
     for fillslot in range(len(arrivals) - 1, 0, -1):
         positionOfMax = 0
         for location in range(1, fillslot + 1):

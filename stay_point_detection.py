@@ -71,41 +71,9 @@ def cluster_stay_points(all_spts):
 def main():
     count = 0
     print(f'Time: {datetime.datetime.now()} \nWriting in files..please wait for some time.The data is hugeeee..!!!')
-
-    # for dirname, dirnames, filenames in os.walk('Data'):
-    #     filenum = len(filenames)
-    #     for filename in filenames:
-    #         if filename.endswith('plt'):
-    #             gpsfile = os.path.join(dirname, filename)
-    #             spt = stayPointExtraction(gpsfile)
-    #             if len(spt) > 0:
-    #
-    #                 spfile = gpsfile.replace('Data', 'StayPoint')
-    #                 if not os.path.exists(os.path.dirname(spfile)):
-    #                     os.makedirs(os.path.dirname(spfile))
-    #                 wb = Workbook()
-    #                 sheet1 = wb.add_sheet((os.path.splitext(os.path.basename(spfile))[0]))
-    #                 sheet1.write(0,0,"Latitude")
-    #                 sheet1.write(0,1,"Longitude")
-    #                 sheet1.write(0,2,"Arrival Time")
-    #                 sheet1.write(0,3,"Leave Time")
-    #                 row = 1
-    #                 col = 0
-    #                 for sp in spt:
-    #                     latlong = (sp.latitude,sp.longitude)
-    #                     all_spts.add(latlong)
-    #                     sheet1.write(row, col, str(sp.latitude))
-    #                     sheet1.write(row, col+1 , str(sp.longitude))
-    #                     sheet1.write(row,col+2, str(time.strftime(time_format, time.localtime(sp.arrival_time))))
-    #                     sheet1.write(row,col+3, str(time.strftime(time_format, time.localtime(sp.leave_time))))
-    #                     row+=1
-    #                 wb.save(os.path.join(
-    #                     os.path.dirname(spfile) + '/' + (os.path.splitext(os.path.basename(spfile))[0]) + '.xls'))
-    # print(f'\n\nTime: {datetime.datetime.now()}\nAll staypoints are:\n{all_spts}')
-    # cluster_stay_points(all_spts)
-
     all_spts = set({})
     os.makedirs('Location_History')
+    # for dirname, dirnames, filenames in os.walk('Sample Data'):
     for dirname, dirnames, filenames in os.walk('Data'):
         filenum = len(filenames)
         for filename in filenames:

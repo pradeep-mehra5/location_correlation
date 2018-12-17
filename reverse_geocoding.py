@@ -3,6 +3,7 @@ from auxiliary_fns import getLocationFromSPs
 from xlwt import Workbook
 import xlrd
 import openpyxl
+import xml.etree.ElementTree as ET
 import datetime
 import os
 import global_vars
@@ -17,20 +18,36 @@ LOCATION_DICT = {}
 CLUSTER_MEAN = {}
 
 def getAddress(latitude,longitude):
-    sensor = 'true'
-    key = "&key=AIzaSyBxWpE_8OK5pA0NaFvx00KOdk1ZFfQxVIc"
-    base = "https://maps.googleapis.com/maps/api/geocode/json?"
-    params = "latlng={lat},{lon}&sensor={sen}".format(
-        lat=latitude,
-        lon=longitude,
-        sen=sensor
+
+    ########################## GOOGLE API ##############################
+    # sensor = 'true'
+    # key = "&key=AIzaSyBxWpE_8OK5pA0NaFvx00KOdk1ZFfQxVIc"
+    # base = "https://maps.googleapis.com/maps/api/geocode/json?"
+    # params = "latlng={lat},{lon}&sensor={sen}".format(
+    #     lat=latitude,
+    #     lon=longitude,
+    #     sen=sensor
+    # )
+    # url = "{base}{params}{key}".format(base=base, params=params , key=key)
+    # response = requests.get(url)
+    # if len(response.json()['results'])==0:
+    #     return f"Error fetching location for Latitude :{latitude} Longitude :{longitude}. Error Message :{response.json()['error_message']}"
+    # else:
+    #     return response.json()['results'][0]['formatted_address']
+
+    ####################### LOCATION IQ API #########################
+    key = "key=139a2baf4d6c01"
+    base = "https://us1.locationiq.org/v1/reverse.php?"
+    params = "lat={lt}&lon={ln}".format(
+        lt=latitude,
+        ln=longitude
     )
-    url = "{base}{params}{key}".format(base=base, params=params , key=key)
+    url = "{base}&{key}&{params}".format(base=base,key=key,params=params)
     response = requests.get(url)
-    if len(response.json()['results'])==0:
-        return f"Error fetching location for Latitude :{latitude} Longitude :{longitude}. Error Message :{response.json()['error_message']}"
-    else:
-        return response.json()['results'][0]['formatted_address']
+    root = ET.fromstring(response.content)
+    for d in root.iter('*'):
+        if d.tag=="result":
+            return (d.text)
 
 
 #   for creating a dictionary of locations mapping locations with their clusterID
@@ -58,7 +75,7 @@ def storeInFile():
     locationSheet.cell(row = 1,column=3).value="Longitude"
     locationSheet.cell(row = 1,column=4).value="Location Address"
 
-    rw = 1
+    rw = 2
     for clusterId in CLUSTER_MEAN:
         locationSheet.cell(row = rw,column=1).value=str(clusterId)
         locationSheet.cell(row = rw,column=2).value=str(CLUSTER_MEAN[clusterId][0])
