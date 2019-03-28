@@ -3,6 +3,7 @@ import os
 import xlrd
 from auxiliary_fns import getTimeStamp
 import openpyxl
+from semantics import attachSemantics
 
 def location_correlation():
     correlation = []
@@ -107,6 +108,8 @@ def createCorrelationFile(correlation):
             correlationSheet.cell(row=2+index1,column=2+index2).value = correlation[index1][index2]
     wb.save('Correlation.xlsx')
     print(correlation)
+    attachSemantics()
+
 
 
 if __name__ == '__main__':

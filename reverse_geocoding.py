@@ -20,34 +20,34 @@ CLUSTER_MEAN = {}
 def getAddress(latitude,longitude):
 
     ########################## GOOGLE API ##############################
-    # sensor = 'true'
-    # key = "&key=AIzaSyBxWpE_8OK5pA0NaFvx00KOdk1ZFfQxVIc"
-    # base = "https://maps.googleapis.com/maps/api/geocode/json?"
-    # params = "latlng={lat},{lon}&sensor={sen}".format(
-    #     lat=latitude,
-    #     lon=longitude,
-    #     sen=sensor
-    # )
-    # url = "{base}{params}{key}".format(base=base, params=params , key=key)
-    # response = requests.get(url)
-    # if len(response.json()['results'])==0:
-    #     return f"Error fetching location for Latitude :{latitude} Longitude :{longitude}. Error Message :{response.json()['error_message']}"
-    # else:
-    #     return response.json()['results'][0]['formatted_address']
+    sensor = 'true'
+    key = "&key=AIzaSyCbb0jbXn2QIE3kXzrNxORoqkLji5CkxzI"
+    base = "https://maps.googleapis.com/maps/api/geocode/json?"
+    params = "latlng={lat},{lon}&sensor={sen}".format(
+        lat=latitude,
+        lon=longitude,
+        sen=sensor
+    )
+    url = "{base}{params}{key}".format(base=base, params=params , key=key)
+    response = requests.get(url)
+    if len(response.json()['results'])==0:
+        return f"Error fetching location for Latitude :{latitude} Longitude :{longitude}. Error Message :{response.json()['error_message']}"
+    else:
+        return response.json()['results'][0]['formatted_address']
 
     ####################### LOCATION IQ API #########################
-    key = "key=139a2baf4d6c01"
-    base = "https://us1.locationiq.org/v1/reverse.php?"
-    params = "lat={lt}&lon={ln}".format(
-        lt=latitude,
-        ln=longitude
-    )
-    url = "{base}&{key}&{params}".format(base=base,key=key,params=params)
-    response = requests.get(url)
-    root = ET.fromstring(response.content)
-    for d in root.iter('*'):
-        if d.tag=="result":
-            return (d.text)
+    # key = "key=139a2baf4d6c01"
+    # base = "https://us1.locationiq.org/v1/reverse.php?"
+    # params = "lat={lt}&lon={ln}".format(
+    #     lt=latitude,
+    #     ln=longitude
+    # )
+    # url = "{base}&{key}&{params}".format(base=base,key=key,params=params)
+    # response = requests.get(url)
+    # root = ET.fromstring(response.content)
+    # for d in root.iter('*'):
+    #     if d.tag=="result":
+    #         return (d.text)
 
 
 #   for creating a dictionary of locations mapping locations with their clusterID
