@@ -1,9 +1,11 @@
 import global_vars
 import os
 import xlrd
+import datetime
 from auxiliary_fns import getTimeStamp
 import openpyxl
 from semantics import attachSemantics
+# from semantics import trainSemantics
 
 def location_correlation():
     correlation = []
@@ -33,6 +35,7 @@ def location_correlation():
             for trip in trips:
                 if len(trip)==0:
                     continue
+                global_vars.all_trips.append(trip)
                 location_trip = []
                 location_trip.append(trip[0])
                 for index in range(1,len(trip)):
@@ -44,12 +47,13 @@ def location_correlation():
                     for index2 in range(index1+1,len(location_trip)):
                         alpha = b**(-1*(index2-index1-1))
                         correlation[location_trip[index1]][location_trip[index2]] += alpha
-    print(correlation)
+    # print(correlation)
     createCorrelationFile(correlation)
 
 
 
 def TripPartition(history,tripPartitionTime = 3*60*60):
+    # print(f'\n\nTime: {datetime.datetime.now()}\nPartitioning location history into trips')
     trips = []
     timeStampedHistory = {}
     for h in history:
@@ -107,7 +111,7 @@ def createCorrelationFile(correlation):
         for index2 in range(len(correlation)):
             correlationSheet.cell(row=2+index1,column=2+index2).value = correlation[index1][index2]
     wb.save('Correlation.xlsx')
-    print(correlation)
+    # print(correlation)
     attachSemantics()
 
 

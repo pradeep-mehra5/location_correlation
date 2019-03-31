@@ -89,6 +89,7 @@ def storeInFile():
 
 
 def attachLocations():
+    print(f'\n\nTime: {datetime.datetime.now()}\nAttaching Locations with location history')
     all_spts = list(global_vars.all_spts)
     for dirname,dirnames,filenames in os.walk('Location_History'):
         for fname in filenames:

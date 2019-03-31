@@ -73,7 +73,7 @@ def main():
     print(f'Time: {datetime.datetime.now()} \nWriting in files..please wait for some time.The data is hugeeee..!!!')
     all_spts = set({})
     os.makedirs('Location_History')
-    for dirname, dirnames, filenames in os.walk('Data'):
+    for dirname, dirnames, filenames in os.walk ('Data'):
         filenum = len(filenames)
         for filename in filenames:
             historyFile = 'Location_History' + '/' + dirname.split('/')[1] + '.xlsx'
