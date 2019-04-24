@@ -40,7 +40,7 @@ def attachSemantics():
             )
         url = "{base}{params}{key}".format(base=base, params=params, key=key)
         response = requests.get(url)
-        # print(f'{response.json()["results"][0]["types"]}\n')
+        print(f'{response.json()["results"]}\n')
         type = response.json()["results"][0]["types"]
         ws.cell(row=1+index,column=5).value= ",".join(type)
         for current_type in type:
@@ -122,9 +122,9 @@ def createClusterToType():
     return clusterIDtoType
 
 if __name__ == "__main__":
-    # attachSemantics()
+    attachSemantics()
     # createClusterToType()
-    findTypeCorrelation()
+    # findTypeCorrelation()
 
 
 
